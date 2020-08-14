@@ -474,85 +474,82 @@ MR_ANALYSIS <- function(myExposure, myOutcome, DIR_DATA_FOR_MR, DIR_RESULT, DIR_
 #######################################
 ##### RUN FUNCTION: "MR_ANALYSIS" #####
 #######################################
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-# 1. Read in command line arguments
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-# ##### --------------------------------------------------------------------------- #####
-# ##### STEP 2. MR analysis with MendelianRandomization and MRPRESSO Rpackages only #####
-# ##### --------------------------------------------------------------------------- #####
-# Rscript --slave --vanilla ${DIR_CODE}/FUN3_MR_ANALYSES.R  \
-# ${myExposure} \
-# ${myOutcome} \
-# ${DIR_OUT_FOR_MR} \
-# ${DIR_PLOT} \
-# ${DIR_RESULT}
-
-# Reading in the command line arguments
-args<-commandArgs(trailingOnly=TRUE)
-
-# Print input arguments
-print(args[1])
-print(args[2])
-print(args[3])
-print(args[4])
-print(args[5])
-print(getwd())
-
-## load parameters from bash ##
-myExposure <- as.character(args[1])
-myOutcome <-  as.character(args[2])
-DIR_DATA_FOR_MR <-  as.character(args[3])
-DIR_PLOT <-  as.character(args[4])
-DIR_RESULT <-  as.character(args[5])
-
-# myExposure <- "cvd3_TFPI___P10646"
-# myOutcome <- "Stroke"
-# DIR_DATA_FOR_MR <- "/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke/sensitivity_analysis/finemap/data/ForMR"
-# DIR_PLOT <- "/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke/sensitivity_analysis/finemap/plots"
-# DIR_RESULT <- "/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke/sensitivity_analysis/finemap/results"
-
-
-DIR <- "/Users/lingyanchen/Dropbox/Cambridge/MR/olink_vs_stroke/sensitivity_analysis/finemap"
-
-List_Exposures <- read.delim("/Users/lingyanchen/Dropbox/Cambridge/MR/olink_vs_stroke/List_sigProteins_stroke_15.txt", sep="\t", header = T)
-List_Exposures <- List_Exposures[ List_Exposures$cis..trans.pQTL. == "cis", ]
-
-List_Outcomes <- c("Cardioembolic-stroke", 
-                   "Ischemic-stroke",
-                   "Large-artery-stroke",
-                   "Small-vessel-stroke",
-                   "Stroke")
-
-List_IVmethods <- c("sss", "cond")
-
-# myExposure <- "cvd3_TFPI___P10646"
-# myOutcome <- "Stroke"
-
-for(ExpIndex in 1:dim(List_Exposures)[1]){
-  myExposure <- as.character(List_Exposures$OlinkPID[ExpIndex])
-  
-  for(OutIndex in 1:length(List_Outcomes)){
-    myOutcome <- as.character(List_Outcomes[OutIndex])
-    
-    for(MethodIndex in 1:length(List_IVmethods)){
-      IV_method <- as.character(List_IVmethods[MethodIndex])
-      
-      print(myExposure)
-      print(myOutcome)
-      print(IV_method)
-      
-      DIR_DATA_FOR_MR <- paste(DIR, "/data/ForMR/", IV_method, sep = "")
-      DIR_PLOT <- paste(DIR, "/plots/", IV_method, sep = "")
-      DIR_RESULT <-  paste(DIR, "/results/", IV_method, sep = "")
-      
-      MR_ANALYSIS(myExposure, myOutcome, DIR_DATA_FOR_MR, DIR_RESULT, DIR_PLOT)
-      
-      
-    }
-  }
-}
-
-##### THE END #####
-
+# #-------------------------------------------------------------------------------------------------------------------------------------------------
+# # 1. Read in command line arguments
+# #-------------------------------------------------------------------------------------------------------------------------------------------------
+# # ##### --------------------------------------------------------------------------- #####
+# # ##### STEP 2. MR analysis with MendelianRandomization and MRPRESSO Rpackages only #####
+# # ##### --------------------------------------------------------------------------- #####
+# # Rscript --slave --vanilla ${DIR_CODE}/FUN3_MR_ANALYSES.R  \
+# # ${myExposure} \
+# # ${myOutcome} \
+# # ${DIR_OUT_FOR_MR} \
+# # ${DIR_PLOT} \
+# # ${DIR_RESULT}
+# 
+# # Reading in the command line arguments
+# args<-commandArgs(trailingOnly=TRUE)
+# 
+# # Print input arguments
+# print(args[1])
+# print(args[2])
+# print(args[3])
+# print(args[4])
+# print(args[5])
+# print(getwd())
+# 
+# ## load parameters from bash ##
+# myExposure <- as.character(args[1])
+# myOutcome <-  as.character(args[2])
+# DIR_DATA_FOR_MR <-  as.character(args[3])
+# DIR_PLOT <-  as.character(args[4])
+# DIR_RESULT <-  as.character(args[5])
+# 
+# # myExposure <- "cvd3_TFPI___P10646"
+# # myOutcome <- "Stroke"
+# # DIR_DATA_FOR_MR <- "/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke/sensitivity_analysis/finemap/data/ForMR"
+# # DIR_PLOT <- "/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke/sensitivity_analysis/finemap/plots"
+# # DIR_RESULT <- "/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke/sensitivity_analysis/finemap/results"
+# 
+# 
+# DIR <- "/Users/lingyanchen/Dropbox/Cambridge/MR/olink_vs_stroke/sensitivity_analysis/finemap"
+# 
+# List_Exposures <- read.delim("/Users/lingyanchen/Dropbox/Cambridge/MR/olink_vs_stroke/List_sigProteins_stroke_15.txt", sep="\t", header = T)
+# List_Exposures <- List_Exposures[ List_Exposures$cis..trans.pQTL. == "cis", ]
+# 
+# List_Outcomes <- c("Cardioembolic-stroke", 
+#                    "Ischemic-stroke",
+#                    "Large-artery-stroke",
+#                    "Small-vessel-stroke",
+#                    "Stroke")
+# 
+# List_IVmethods <- c("sss", "cond")
+# 
+# # myExposure <- "cvd3_TFPI___P10646"
+# # myOutcome <- "Stroke"
+# 
+# for(ExpIndex in 1:dim(List_Exposures)[1]){
+#   myExposure <- as.character(List_Exposures$OlinkPID[ExpIndex])
+#   
+#   for(OutIndex in 1:length(List_Outcomes)){
+#     myOutcome <- as.character(List_Outcomes[OutIndex])
+#     
+#     for(MethodIndex in 1:length(List_IVmethods)){
+#       IV_method <- as.character(List_IVmethods[MethodIndex])
+#       
+#       print(myExposure)
+#       print(myOutcome)
+#       print(IV_method)
+#       
+#       DIR_DATA_FOR_MR <- paste(DIR, "/data/ForMR/", IV_method, sep = "")
+#       DIR_PLOT <- paste(DIR, "/plots/", IV_method, sep = "")
+#       DIR_RESULT <-  paste(DIR, "/results/", IV_method, sep = "")
+#       
+#       MR_ANALYSIS(myExposure, myOutcome, DIR_DATA_FOR_MR, DIR_RESULT, DIR_PLOT)
+#       
+#       
+#     }
+#   }
+# }
 
 ##### ! NOT RUN #####
