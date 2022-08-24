@@ -4,7 +4,7 @@
 rm(list = ls())
 
 ## load R pacakges 
-.libPaths("/home/lc753/privatemodules/RLibs/RLibs-r-3.5.1")
+.libPaths("~/RLibs/RLibs-r-3.5.1")
 library(MendelianRandomization)
 
 ## List Exposures & Outcoems ##
@@ -30,11 +30,7 @@ myPth <- List_Pth[2]
 ##### data directory #####
 IV_method="LDclump"
 
-## local directory ##
-# DIR="/Users/lingyanchen/Dropbox/Cambridge/MR/olink_vs_stroke"
-
-## CSD3 directory ##
-DIR="/home/lc753/rds/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke"
+DIR="~/MR/olink_vs_stroke"
 
 ##### save all data as the same format with the following columns #####
 mydat_colnanmes<- c("SNPList", "Pth", "SNP", "chromosome",  "position",
@@ -219,48 +215,3 @@ write.table(Results_ALL, file = paste(DIR_SUMMARY, "/MRresults_with_MendelianRan
 ###################
 ##### THE END #####
 ###################
-
-
-# ##### --------------- #####
-# ##### No MR Rpackeges #####
-# ##### --------------- #####
-# ##### An example #####
-# ## manually calculate the causal effect using ratio methods & meta-analyse SNPs uisng fix-effect model: 
-# beta = mydat$beta.outcome/mydat$beta.exposure
-# se = abs(mydat$se.outcome/mydat$beta.exposure)
-# 
-# weight = 1/(se^2)
-# beta.weighted = weight * beta
-# 
-# ## heterogeneity
-# k = dim(mydat)[1]  ## number of SNPs
-# Q = sum(weight * beta^2) - sum(weight * beta)^2/sum(weight)
-# df = k - 1
-# I2 = (Q-df)/Q *100
-# 
-# Q
-# I2
-# 
-# ##### fixed-effect model #####
-# beta_all_fixed = sum(weight * beta)/sum(weight)
-# se_all_fixed = 1/sum(weight)^0.5
-# Pval_fixed= 2*pnorm(-abs(beta_all_fixed/se_all_fixed))
-# 
-# beta_all_fixed
-# se_all_fixed
-# Pval_fixed
-# 
-# 
-# ##### random-effect model: #####
-# v = (Q - (k-1))/(sum(weight) - sum(weight^2)/sum(weight))   ## constant for adjusting weight
-# weight_v = 1/(se^2 + v)
-# 
-# beta_all_random = sum(weight_v * beta)/sum(weight_v)
-# se_all_random = (1/sum(weight_v))^0.5
-# Pval_random= 2*pnorm(-abs(beta_all_random/se_all_random))
-# 
-# beta_all_random
-# se_all_random
-# Pval_random
-
-##### THE END #####
