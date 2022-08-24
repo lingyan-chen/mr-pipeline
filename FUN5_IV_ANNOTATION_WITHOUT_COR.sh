@@ -5,7 +5,6 @@
 #SBATCH --ntasks=1
 #SBATCH --time=2:59:59
 #SBATCH -p skylake-himem
-# #SBATCH --array=2-369
 #SBATCH --output=slurm/annovar_%A.out
 #SBATCH --error=slurm/annovar_%A.err
 #SBATCH --mail-type=FAIL
@@ -32,43 +31,38 @@ module load ceuadmin/plink-bgi/archive/1.90
 module load ceuadmin/tabix/0.2.6
 
 ## Make R aware of the new library location
-echo "R_LIBS_USER=/home/lc753/privatemodules/RLibs/RLibs-r-3.5.1"    > ~/.Renviron
+echo "R_LIBS_USER=Path-to-R-Libs"    > ~/.Renviron
 
 ## set working directory ##
-DIR="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke"
+DIR="working-directory"
 DIR_CODE="${DIR}/code"
 DIR_slurm="${DIR_CODE}/slurm"
 DIR_DATA="${DIR}/data"
 
 ## GWAS summary stats ##
 ## exposure: olink proteom GWAS ##
-DIR_IN_proteinGWAS="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/pQTL/data/olink"
+DIR_IN_proteinGWAS="Path-to-proteinGWAS"
 DIR_IN_proteinGWAS_tabix=${DIR_IN_proteinGWAS}
-DIR_OUT_proteinGWAS="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke/data/olink_summary_stats"
-
-# ## exposure: metabolon GWAS ##
-# DIR_IN_metabGWAS="/rds/project/jmmh2/rds-jmmh2-projects/metabolon_metabolomics/interval/gwas/interval_epic_meta_analysis"
-# DIR_IN_metabGWAS_tabix="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/gwas/metabolon/METABOLON"
-# DIR_OUT_metabGWAS="${DIR_DATA}/metabolon_summary_stats"
+DIR_OUT_proteinGWAS="Path-for-output"
 
 ## Primary outcome: stroke GWAS ##
-DIR_IN_strokeGWAS="/rds/project/jmmh2/rds-jmmh2-projects/proteomics_twas/prediction/data_sets/gwas_summary_statistics/phenoscanner_format_tabixed"
+DIR_IN_strokeGWAS="path-to-strokeGWAS"
 DIR_OUT_strokeGWAS="${DIR_DATA}/megastroke_summary_stats"
-DIR_IN_strokeGWAS_SNPlist="/rds/user/lc753/hpc-work/gwas/megastroke"
+DIR_IN_strokeGWAS_SNPlist="path-to-strokeGWAS-snplist"
 
 # ## Secondary outcome: stroke risk factors GWAS ##
-# DIR_IN_riskFactorGWAS="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/gwas/StrokeRiskFactors"
+# DIR_IN_riskFactorGWAS="Path-to-riskFactorsGWAS"
 # DIR_OUT_riskFactorGWAS="${DIR_DATA}/StrokeRiskFactors_summary_stats"
-# DIR_IN_riskFactorGWAS_SNPlist="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/gwas/StrokeRiskFactors"
+# DIR_IN_riskFactorGWAS_SNPlist="Path-to-riskFactorsGWAS-SNPlist"
 
 # ## ukbbGWAS ##
-# DIR_IN_ukbbGWAS="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/gwas/UKBB_SAIGE_HRC/ALL"
+# DIR_IN_ukbbGWAS="Path-to-UKBB-GWAS"
 # DIR_OUT_ukbbGWAS="${DIR_DATA}/ukbb_summary_stats"
-# DIR_IN_ukbbGWAS_SNPlist="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/gwas/UKBB_SAIGE_HRC"
+# DIR_IN_ukbbGWAS_SNPlist="Path-to-UKBB-GWAS-SNPList"
 
 ## set directories for ANNOVAR
-DIR_SNPLIST="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke/data/olink_pqtl"
-DIR_ANNOVAR="/home/lc753/rds/hpc-work/apps/annovar"
+DIR_SNPLIST="Path-to-Olink_SNPlist"
+DIR_ANNOVAR="Path-to-annovar"
 DIR_ANNOVAR_OUT="${DIR_SNPLIST}/annovar"
 
 ## creat directory for output if not exist ##
