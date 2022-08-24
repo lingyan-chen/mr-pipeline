@@ -30,18 +30,18 @@ module load ceuadmin/LDstore/1.1
 module load ceuadmin/plink-bgi/archive/1.90
 
 ## set working directory ##
-DIR="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke"
+DIR="~/MR/olink_vs_stroke"
 DIR_CODE="${DIR}/code"
 DIR_DATA="${DIR}/data"
 
 ## GWAS summary stats ##
-DIR_IN_proteinGWAS="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/pQTL/data/olink"
-DIR_OUT_proteinGWAS="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke/data/olink_summary_stats"
-DIR_IN_strokeGWAS="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/gwas/megastroke"
-DIR_OUT_strokeGWAS="/rds/user/lc753/hpc-work/MR/olink_vs_stroke/data/megastroke_summary_stats"
+DIR_IN_proteinGWAS="~/pQTL/data/olink"
+DIR_OUT_proteinGWAS="~/MR/olink_vs_stroke/data/olink_summary_stats"
+DIR_IN_strokeGWAS="~/gwas/megastroke"
+DIR_OUT_strokeGWAS="~/MR/olink_vs_stroke/data/megastroke_summary_stats"
 
 ## plink bfile for genome-wide from BP's clean INTERVAL data ##
-mybfile="/rds/project/jmmh2/rds-jmmh2-projects/proteomics_twas/prediction/data_sets/interval_subset_olink/genotype_files/unrelated_4994_pihat_0.1875_autosomal_imputed_info_0.4_phwe_1e-4_filtered/output/plink_format/interval.imputed.olink.all_chrs.locuszoom_chr_pos_varids"
+mybfile="~/interval_subset_olink/genotype_files/unrelated_4994_pihat_0.1875_autosomal_imputed_info_0.4_phwe_1e-4_filtered/output/plink_format/interval.imputed.olink.all_chrs.locuszoom_chr_pos_varids"
 
 ## LD clumped SNPs list based on pQTLs p-value ##
 DIR_OUT_CLUMPED="${DIR_DATA}/LD_clumped_snps"
@@ -76,22 +76,8 @@ cd ${DIR_CODE}
 
 ## target Protein list ##
 targetProteinList="${DIR}/List_targetProteins.txt"
-# targetProteinList="${DIR}/List_targetProteins_sup_70.txt"
-# targetProteinList="${DIR}/List_targetProteins_sup_247.txt"
 
 ##### read my exposure and outcome #####
-# strokeGWAS="Ischemic-stroke"
-# myPanel="cvd3"
-# myProteinID="TFPI___P10646"
-# myPanel="neuro"
-# myProteinID="TMPRSS5___Q9H3S3"
-
-# SLURM_ARRAY_TASK_ID=362
-# SLURM_ARRAY_TASK_ID=172
-# SLURM_ARRAY_TASK_ID=2
-# SLURM_ARRAY_TASK_ID=53
-# SLURM_ARRAY_TASK_ID=49
-# SLURM_ARRAY_TASK_ID=$(egrep -n 'cvd2_MERTK___Q12866' ${targetProteinList} | awk -F":" '{print $1}')
 myPanel=$(awk -v protein_id_line=${SLURM_ARRAY_TASK_ID} 'NR==protein_id_line{print $2}' ${targetProteinList} )
 myProteinID=$(awk -v protein_id_line=${SLURM_ARRAY_TASK_ID} 'NR==protein_id_line{print $3}' ${targetProteinList})
 myOlinkPID="${myPanel}_${myProteinID}"
@@ -101,17 +87,14 @@ echo ${myPanel}
 echo ${myProteinID}
 echo ${myOlinkPID}
 
-# ##### --------------------------------------#####
-# ##### STEP 1. format data for Two Sample MR #####
-# ##### --------------------------------------#####
-# Rscript --slave --vanilla ${DIR_CODE}/MR_PIPELINE/MR_PIPELINE_FUN1_FORMAT_DATA.R \
-# ${myOlinkPID} \
-# ${DIR} \
-# ${DIR_CODE} \
-# ${DIR_DATA}
-
-# myOlinkPID="cvd3_PECAM.1___P16284"
-# myOlinkPID="inf1_CD5___P06127"
+##### --------------------------------------#####
+##### STEP 1. format data for Two Sample MR #####
+##### --------------------------------------#####
+Rscript --slave --vanilla ${DIR_CODE}/MR_PIPELINE/MR_PIPELINE_FUN1_FORMAT_DATA.R \
+${myOlinkPID} \
+${DIR} \
+${DIR_CODE} \
+${DIR_DATA}
 
 ##### ---------------------------------------------- #####
 ##### STEP 2. MR analysis without correlation matrix #####
@@ -120,7 +103,7 @@ Rscript --slave --vanilla ${DIR_CODE}/MR_PIPELINE_olink_vs_stroke_2020-04-15.R  
 ${myOlinkPID} \
 ${DIR}
 
-myDate="2020-04-15"
+
 ##### ----------------------------------------------------- #####
 ##### STEP 4. combine MR results without correlation matrix #####
 ##### ----------------------------------------------------- #####
