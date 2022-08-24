@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 # 0. Load libraries
 #-------------------------------------------------------------------------------------------------------------------------------------------------
-.libPaths("/home/lc753/privatemodules/RLibs/RLibs-r-3.5.1")
+.libPaths("path-to-R-libs")
 ## load libraries ##
 library(TwoSampleMR)
 library("plyr")
@@ -38,19 +38,11 @@ DIR_CODE <- as.character(args[2])
 DIR_DATA <- as.character(args[3])
 myDate <- as.character(args[4])
 
-# DIR="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke"
-# DIR_CODE=paste(DIR, "/code",sep = "")
-# DIR_DATA=paste(DIR, "/data",sep = "")
-# myDate = "2020-04-15"
 
 ########################################
 #### Function4 - Combine MRresults #####
 ########################################
 COMBINE_RESULTS <- function(mySNPset, DIR_RESULT, DIR_SUMMARY, DATE){
-
-  # DIR_RESULT = dir_results
-  # DIR_SUMMARY = dir_summary
-  # DATE = today
 
   file_list <- list.files(path = paste(DIR_RESULT,  "/", mySNPset, sep = ""), pattern = "MRresults_", full.names = FALSE, ignore.case = FALSE)
   myResult_ALL <- read.delim(file = paste(DIR_RESULT, "/", mySNPset, "/", file_list[1], sep = ""), header = T, sep = "\t")
@@ -73,11 +65,7 @@ COMBINE_RESULTS <- function(mySNPset, DIR_RESULT, DIR_SUMMARY, DATE){
 ##### DEFINE FUNTION: "CLEAN_MR_RESULTS" - keep one MR results (with outlier-corrected if available) #####
 ##########################################################################################################
 CLEAN_MR_RESULTS <- function(dir_summary, myDate, List_SNPsets){
-  
-  # dir_summary = "~/Dropbox/Cambridge/MR/olink_vs_stroke/summary"
-  # myDate = "2020-04-15"
-  # List_SNPsets <- c("p1_5e8_r2_0.01", "p1_5e8_r2_0.1", "p1_5e8_r2_0.2")
-  
+
   for(k in 1:length(List_SNPsets)){
     mySNPset <- List_SNPsets[k]
     
@@ -137,7 +125,6 @@ CLEAN_MR_RESULTS <- function(dir_summary, myDate, List_SNPsets){
    } ## END of loop through "List_SNPsets"
 
 } ## END of function "CLEAN_MR_RESULTS"
-
 
 
 
