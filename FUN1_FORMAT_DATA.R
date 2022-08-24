@@ -6,7 +6,7 @@ FORMAT_DATA <- function(DIR_SNPset, DIR_EXPOSURE, DIR_OUTCOME, mySNPset, myExpos
   # DIR_DATA = dir_data
   
   ## load libraries for format data ##
-  # .libPaths("/home/lc753/privatemodules/RLibs/RLibs-r-3.5.1")
+  # .libPaths("Path-to-R-Libs")
   ## load libraries ##
   library(TwoSampleMR)
   library("plyr")
@@ -17,7 +17,6 @@ FORMAT_DATA <- function(DIR_SNPset, DIR_EXPOSURE, DIR_OUTCOME, mySNPset, myExpos
 
   ##### 1. FORMAT EXPOSURE DATA #####
   myExposure_data <- read.delim(file = paste(DIR_EXPOSURE,"/", mySNPset, "/", myExposure, sep = ""), header = T, sep = "")
-  # myExposure_data$SNPID_NEW <- paste("chr", myExposure_data$chromosome, ":", myExposure_data$position, sep = "")
   
   ## sometimes there are some problems when reading allele "T" in a matrix:
   for(k in 1: dim(myExposure_data)[1]){
@@ -55,21 +54,6 @@ FORMAT_DATA <- function(DIR_SNPset, DIR_EXPOSURE, DIR_OUTCOME, mySNPset, myExpos
   
   
   ##### 2. FORMAT OUTCOME DATA #####
-  # myOutcome_data <- read.delim(file = paste(DIR_OUTCOME,"/",mySNPset, "/",myOutcome,  "_transethnic_gwas.txt", sep = ""), header = T, sep = "", stringsAsFactors = F)
-  
-  ## subset outcome data for myExposure ##
-  # outcome_data <- format_data(myOutcome_data,
-  #                             type = "outcome",
-  #                             header = TRUE,
-  #                             snps = exposure_data$SNP,
-  #                             snp_col = "snp",
-  #                             beta_col = "beta",
-  #                             se_col = "se",
-  #                             effect_allele_col = "effect_allele",
-  #                             other_allele_col = "other_allele",
-  #                             eaf_col = "eaf",
-  #                             pval_col = "pval")
-  
   ## read outcome data ##
   myOutcome_data <- read.delim(file = paste(DIR_OUTCOME,"/",mySNPset, "/",myExposure, "_vs_", myOutcome, sep = ""), header = T, sep = "", stringsAsFactors = F)
   
