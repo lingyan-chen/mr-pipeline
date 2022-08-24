@@ -3,9 +3,7 @@
 ##########################################################
 rm(list = ls())
 ## set up directories ##
-# DIR = "C:/Users/lc753/Dropbox/Cambridge/MR"
-# DIR = "~/Dropbox/Cambridge/MR"
-DIR = "/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR"
+# DIR = "working-directory"
 
 myDIR = paste(DIR, "/olink_vs_stroke", sep = "")
 dir_code = paste(myDIR, "/code/MR", sep = "")
@@ -24,12 +22,10 @@ DIR_OUTCOME = paste(dir_data, "/stroke_gwas", sep = "")
 #####--------------------#####
 ## List SNPsets ##
 List_SNPsets <- c("p1_5e8_r2_0.01", "p1_5e8_r2_0.1", "p1_5e8_r2_0.2")
-# List_SNPsets <- c("p1_5e8_r2_0.1")
 mySNPset <- List_SNPsets[1]
 
 ## List exposures_all ##
 List_Exposures <- read.delim(paste(myDIR,"/List_olinkProteins_withGeneInfo.txt", sep = ""), header = T, stringsAsFactors = F, sep = "\t")
-# List_Exposures <- List_Exposures[- which(List_Exposures$OlinkPID == "inf1_DNER___Q8NFT8"), ]
 head(List_Exposures)
 dim(List_Exposures)
 
@@ -62,10 +58,6 @@ for(k in 1: length(List_SNPsets)){
   mydata_all <- read.delim(paste(dir_data, "/ForMR/", mySNPset, "/harmonised_sumstats_", myExposure,"_vs_", myOutcome, ".txt", sep =  ""), header = T, sep = "\t")
   mydata_all <- mydata_all[, colnanmes_harmonised_sumstats]
   dim(mydata_all)
-  
-  # ## For significant proteins only ##
-  # for(i in 1: dim(List_Exposures_sig)[1]){
-  # myExposure <- List_Exposures_sig$OlinkPID[i]
 
   ## For all proteins ##
   for(i in 1: dim(List_Exposures)[1]){
@@ -130,30 +122,3 @@ for(k in 1: length(List_SNPsets)){
 ###################
 ##### THE END #####
 ###################
-
-# ## combine all exposures and all outcomes ##
-# for(k in 1: length(List_SNPsets)){
-#   
-#   mySNPset <- List_SNPsets[k]
-#   mydata_all <- read.delim(file = paste(dir_summary, "/harmonised_sumstats_for_StrokeProteins_", mySNPset, ".txt", sep = ""), sep = "\t", header = T)
-# 
-#   for(index in 1: dim(mydata_all)[1]){
-#     
-#     if(is.na(mydata_all$effect_allele.exposure[index])  | is.na(mydata_all$other_allele.exposure[index])){
-#       
-#     }else{
-#       if(mydata_all$effect_allele.exposure[index] == TRUE){ mydata_all$effect_allele.exposure[index] <- as.character("T") }
-#       if(mydata_all$other_allele.exposure[index] == TRUE){ mydata_all$other_allele.exposure[index] <- as.character("T") }
-#       if(mydata_all$effect_allele.outcome[index] == TRUE){ mydata_all$effect_allele.outcome[index] <- as.character("T") }
-#       if(mydata_all$other_allele.outcome[index] == TRUE){ mydata_all$other_allele.outcome[index] <- as.character("T") }
-#     }
-#   
-#   }
-#   head(mydata_all)
-#   write.table(mydata_all, file = paste(dir_summary, "/harmonised_sumstats_for_StrokeProteins_", mySNPset, ".txt", sep = ""), col.names = T, row.names = F, sep = "\t", quote = F)
-# 
-# }
-# 
-# ## For stroke significant proteins only:
-# # write.table(mydata_all[-1,], file = paste(dir_summary, "/harmonised_sumstats_for_StrokeProteins_", mySNPset, ".txt", sep = ""), col.names = T, row.names = F, sep = "\t", quote = F)
-
