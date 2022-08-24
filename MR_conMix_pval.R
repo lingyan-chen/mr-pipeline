@@ -1,6 +1,7 @@
 #########################################################################
 ##### MR Contamination mixture method - function return with Pvalue #####
 #########################################################################
+
 library(MendelianRandomization)
 setClass("MRConMix",
          representation(Exposure = "character",
