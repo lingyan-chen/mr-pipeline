@@ -7,7 +7,7 @@ library(TwoSampleMR)
 library("plyr")
 library(MendelianRandomization)
 library(MRPRESSO)
-library("psych")   #install.packages("psych")
+library("psych")
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 # 1. Read in command line arguments
@@ -15,12 +15,9 @@ library("psych")   #install.packages("psych")
 # ##### ---------------------------------------------- #####
 # ##### STEP 3. MR analysis without correlation matrix #####
 # ##### ---------------------------------------------- #####
-# Rscript --slave --vanilla ${DIR_CODE}/MR_PIPELINE/MR_PIPELINE_olink_vs_stroke_2020-04-11.R  \
+# Rscript --slave --vanilla ${DIR_CODE}/MR_PIPELINE/MR_PIPELINE_olink_vs_stroke.R  \
 # ${myOlinkPID} \
 # ${DIR} 
-
-# echo ${myOlinkPID}
-# echo ${DIR}
 
 # Reading in the command line arguments
 args<-commandArgs(trailingOnly=TRUE)
@@ -41,8 +38,7 @@ DIR <-  as.character(args[2])
 ################################################################################
 ################################################################################
 ## set working directory ##
-# DIR="C:/Users/lc753/Dropbox/Cambridge/MR/olink_vs_stroke"
-# DIR="/rds/project/jmmh2/rds-jmmh2-projects/blood_pressure_genetics/bioinformatics/mr/MR/olink_vs_stroke"
+# DIR="working-directory"
 DIR_CODE=paste(DIR, "/code", sep = "")
 DIR_DATA=paste(DIR, "/data", sep = "")
 
@@ -69,28 +65,12 @@ DIR_OUTCOME = paste(dir_data, "/stroke_gwas", sep = "")
 #####--------------------#####
 ## List SNPsets ##
 List_SNPsets <- c("p1_5e8_r2_0.01", "p1_5e8_r2_0.1", "p1_5e8_r2_0.2")
-# mySNPset <- "p1_5e8_r2_0.1"
-
-# ## List exposures ##
-# myExposure <- "cvd3_TFPI___P10646"
-# myExposure <- "neuro_TMPRSS5___Q9H3S3"
-# myExposure <- "cvd3_EPHB4___P54760"
-# myExposure <- "inf1_CD6___Q8WWJ7"
-# myExposure <- "cvd2_GDF.2___Q9UK05"
-# myExposure <- "cvd3_ICAM.2___P13598"
-# myExposure <- "cvd2_MERTK___Q12866"
 
 ## List outcomes ##
-# List_Outcomes <- c("pad", "vte")
 List_Outcomes <- c("Stroke", "Ischemic-stroke", "Large-artery-stroke", "Cardioembolic-stroke", "Small-vessel-stroke")
-# myOutcome <- "Cardioembolic-stroke"
 
 ## creat directories for correlation matrix and results accounted for correlation ##
 dir_results = paste(dir_results_all, "/withoutCorMatrix", sep = "")
-# dir_results = paste(dir_results, "/NoExonicSNP", sep = "")
-# dir.create(dir_results, showWarnings = FALSE)
-# dir_results = paste(dir_results, "/cisSNP", sep = "")
-# dir.create(dir_results, showWarnings = FALSE)
 dir_summary = paste(dir_summary_all, "/withoutCorMatrix", sep = "")
 dir.create(dir_summary, showWarnings = FALSE)
 
@@ -120,21 +100,14 @@ for(k in 1: length(List_SNPsets)){
         print(paste("No available outcome data for ", myOutcome, sep = ""))
       }else{
 
-        # ##### step 1 - format data #####
-        # ## load source R code for function "FUN1_FORMAT_DATA.R" ##
-        # source(paste(DIR_CODE, "/MR/FUN1_FORMAT_DATA.R", sep = ""))
-        # FORMAT_DATA(DIR_SNPset, DIR_EXPOSURE, DIR_OUTCOME, mySNPset, myExposure, myOutcome, dir_data)
+        ##### step 1 - format data #####
+        ## load source R code for function "FUN1_FORMAT_DATA.R" ##
+        source(paste(DIR_CODE, "/MR/FUN1_FORMAT_DATA.R", sep = ""))
+        FORMAT_DATA(DIR_SNPset, DIR_EXPOSURE, DIR_OUTCOME, mySNPset, myExposure, myOutcome, dir_data)
 
   	  	##### step 2 - MR analysis without correlation matrix #####
-  	  	## the difference betweeen funtion "FUN3_MR_ANALYSES_WITHOUT_COR.R" & "FUN3_MR_ANALYSES_WITHOUT_COR_2020-04-11.R" is that:
-  	  	## the second function force the MR analysis to include the palindromic alleles.  Almost all the GWAS sumamry stats are now coded the allele in the + strand, so alleles can be compared directly.
-  	  	
-        ## the difference betweeen funtion "FUN3_MR_ANALYSES_WITHOUT_COR_2020-04-11.R" & "FUN3_MR_ANALYSES_WITHOUT_COR_2020-04-15.R" is that:
-        ## the second function perform MR-contamination mixture model for IVs = 3.  
-        ## If the contamination mixture model give multiple range (95%CI), keep the first one. [ IVs may have been clustered into different groups]
-
         source(paste(DIR_CODE, "/MR_conMix_pval.R", sep = ""))
-  	  	source(paste(DIR_CODE, "/FUN3_MR_ANALYSES_WITHOUT_COR_2020-04-15.R", sep = ""))
+  	  	source(paste(DIR_CODE, "/FUN3_MR_ANALYSES_WITHOUT_COR.R", sep = ""))
   	  	MR_ANALYSES_WITHOUT_COR(mySNPset, myExposure, myOutcome, dir_data, dir_plots, dir_results)
 
       }
